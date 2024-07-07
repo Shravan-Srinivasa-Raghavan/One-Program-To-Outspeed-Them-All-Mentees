@@ -92,9 +92,9 @@ HINT : USE MULTITHREADING TO SEARCH IN SUBTREES THEN RETURN THE MOMENT U FIND IT
 (Note we do not expect to see a speedup for low values of n, but for n > 10000)
 
 */
-
-    cout<<"Student code not implemented\n";
-    exit(1);
+         
+    // cout<<"Student code not implemented\n";
+    // exit(1);
 
 }
 

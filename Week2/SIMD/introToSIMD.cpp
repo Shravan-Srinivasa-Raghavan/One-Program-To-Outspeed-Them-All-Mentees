@@ -170,10 +170,16 @@ cout<<z[0]<<" "<<z[1]<<endl;
 
 TASK:
 MAKE A VECTORIZED IMPLEMENTATION OF ABOVE CODE
-
+256 = 2^8
+512 = 2^9
+1024 = 2^12 = 16^3 
 */
 
 //student code begin
-cout<<"Task not completed!\n";
+int32_t X = 0x07F0CB;
+int32_t Y = 0x09B0C9;
+int32_t Z = X + Y;
+int16_t z1 = Z >> (12),z2 = Z & 0xFFF ;
+cout<< z1 << " " << z2 << "\n";
 //student code end
 }

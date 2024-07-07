@@ -2,7 +2,7 @@
 #include <immintrin.h>
 #include <iomanip>
 using namespace std;
-int main () {
+int main (int argc, char* argv[]) {
 
 /*
 
@@ -11,25 +11,25 @@ The code below computes vec3 = vec1 + vec2
 
 */
 
-float vec1[128];
-float vec2[128];
-float vec3[128];
-__m256 v1,v2,v3; // using 256 bit registers, each float is of 32 bits so each register holds up to 8 floats
-for (int i=0; i<128; i++) {
-    vec1[i] = i;
-    vec2[i] = 2*i;
-} 
+// float vec1[128];
+// float vec2[128];
+// float vec3[128];
+// __m256 v1,v2,v3; // using 256 bit registers, each float is of 32 bits so each register holds up to 8 floats
+// for (int i=0; i<128; i++) {
+//     vec1[i] = i;
+//     vec2[i] = 2*i;
+// } 
 
-for (int i=0; i<128; i+=8) {
-    v1 = _mm256_loadu_ps(vec1+i); // load vec1[i],vec1[i+1]..vec1[i+7] into 256 bit register
-    v2 = _mm256_loadu_ps(vec2+i); // load vec2[i],vec2[i+1]..vec2[i+7] into 256 bit register
-    v3 = _mm256_add_ps(v1,v2); // add the two 256 bit registers and store result in a third 256 bit register (v3)
-    _mm256_storeu_ps(vec3+i,v3); // store v3 in vec3+i
-}
+// for (int i=0; i<128; i+=8) {
+//     v1 = _mm256_loadu_ps(vec1+i); // load vec1[i],vec1[i+1]..vec1[i+7] into 256 bit register
+//     v2 = _mm256_loadu_ps(vec2+i); // load vec2[i],vec2[i+1]..vec2[i+7] into 256 bit register
+//     v3 = _mm256_add_ps(v1,v2); // add the two 256 bit registers and store result in a third 256 bit register (v3)
+//     _mm256_storeu_ps((vec3+i),v3); // store v3 in vec3+i
+// }
 
-for (int i=0; i<128; i++) {
-    cout<<vec3[i]<<" ";
-}
+// for (int i=0; i<128; i++) {
+//     cout<<vec3[i]<<" ";
+// }
 
 /*
 
@@ -41,25 +41,30 @@ TASK : UNCOMMENT THE BELOW CODE AND OBSERVE A RUNTIME ERROR OF SOME KIND (also p
 TASK : FIX THE CODE SO THAT THE RUNTIME ERROR DOES NOT OCCUR
 
 */
+int N = 130;
+float vec1[N];
+float vec2[N];
+float vec3[N];
+__m256 v1,v2,v3; // using 256 bit registers, each float is of 32 bits so each register holds up to 8 floats
+for (int i = 0; i < N ; i++) {
+    vec1[i] = i;
+    vec2[i] = 2*i;
+} 
 
-// float vec1[130];
-// float vec2[130];
-// float vec3[130];
-// __m256 v1,v2,v3; // using 256 bit registers, each float is of 32 bits so each register holds up to 8 floats
-// for (int i=0; i<130; i++) {
-//     vec1[i] = i;
-//     vec2[i] = 2*i;
-// } 
-//
-// for (int i=0; i<130; i+=8) {
-//     v1 = _mm256_loadu_ps(vec1+i); // load vec1[i],vec1[i+1]..vec1[i+7] into 256 bit register
-//     v2 = _mm256_loadu_ps(vec2+i); // load vec2[i],vec2[i+1]..vec2[i+7] into 256 bit register
-//     v3 = _mm256_add_ps(v1,v2); // add the two 256 bit registers and store result in a third 256 bit register (v3)
-//     _mm256_storeu_ps(vec3+i,v3); // store v3 in vec3+i
-// }
-//
-// for (int i=0; i<130; i++) {
-//     cout<<vec3[i]<<" ";
-// }
+for (int i = 0; i < N - N%8 ; i += 8) {
+    v1 = _mm256_loadu_ps(vec1+i); // load vec1[i],vec1[i+1]..vec1[i+7] into 256 bit register
+    v2 = _mm256_loadu_ps(vec2+i); // load vec2[i],vec2[i+1]..vec2[i+7] into 256 bit register
+    v3 = _mm256_add_ps(v1,v2); // add the two 256 bit registers and store result in a third 256 bit register (v3)
+    _mm256_storeu_ps(vec3+i,v3); // store v3 in vec3+i
+}
+for (int i = N - N%8 ; i < N ; i++){
+    v3[i] = v1[i] + v2[i];
+}
 
+for (int i = 0; i < N ; i++) {
+    cout<<vec3[i]<<" ";
+}
+// for (int i = 0 ; i < N ; i++){
+//     vec3[i] = vec1[i] + vec2[i];
+// }
 }
